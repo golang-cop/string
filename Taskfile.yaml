@@ -12,10 +12,11 @@ tasks:
 
   build:
     desc: build the code
+    vars:
+      binary: ./bin/string
     cmds:
-    - go build -o bin/boolean
-    - ./bin/boolean
-
+    - go build -o ./{{ .binary }}
+    - ./{{ .binary }}
   test:
     desc: run the tests suite
     cmds:

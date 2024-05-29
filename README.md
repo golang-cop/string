@@ -13,3 +13,31 @@ go: to add module requirements and sums:
 ```bash
 $ task module:requirements
 ```
+
+## Usage
+
+```golang
+package main
+
+import (
+        "fmt"
+        "github.com/golang-oop/string"
+)
+
+func main {
+        s := String.New(`Hello World!`)
+        fmt.Println(s.ToGoString())
+        if r:=s.Split(` `); r.HasError() {
+                fmt.Prints(
+                        "%s\n",
+                        r.Error().Message(),
+                )
+        } else {
+                fmt.Prints(
+                        "%+v",
+                        r.Payload(),
+                ) 
+        }
+}
+```
+
