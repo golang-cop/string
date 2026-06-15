@@ -44,13 +44,16 @@ jobs:
           set -euo pipefail
           fail=0
           while IFS= read -r pkg; do
+            # Skip packages that carry no test files (e.g. package main).
+            ntests="$(go list -f '{{len .TestGoFiles}}{{len .XTestGoFiles}}' "$pkg")"
+            if [ "$ntests" = "00" ]; then
+              echo "no test files for $pkg — skipping"
+              continue
+            fi
             out="$(CGO_ENABLED=0 go test -cover -covermode=atomic "$pkg" 2>&1)" || {
               echo "$out"; fail=1; continue
             }
             echo "$out"
-            if grep -q "no test files" <<<"$out"; then
-              continue
-            fi
             cov="$(grep -oE 'coverage: [0-9.]+%' <<<"$out" | grep -oE '[0-9.]+' | tail -n1)"
             if [ -z "$cov" ]; then
               echo "::error::no coverage figure for $pkg"; fail=1; continue
