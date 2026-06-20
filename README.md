@@ -1,3 +1,5 @@
+<p align="center"><img src="https://raw.githubusercontent.com/golang-cop/brand/main/social/golang-oop.png" alt="golang-cop/string" width="720"></p>
+
 # string
 
 ```bash
@@ -40,4 +42,3 @@ func main {
         }
 }
 ```
-
