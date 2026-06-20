@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	String "github.com/golang-oop/string/src"
+	String "github.com/golang-cop/string/src"
 )
 
 func main() {

@@ -1,13 +1,13 @@
-<p align="center"><img src="https://raw.githubusercontent.com/golang-cop/brand/main/social/golang-oop.png" alt="golang-cop/string" width="720"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/golang-cop/brand/main/social/golang-cop.png" alt="golang-cop/string" width="720"></p>
 
 # string
 
 ```bash
 $ task module:init
 task: [module:init] 
-go mod init github.com/golang-oop/boolean
+go mod init github.com/golang-cop/boolean
 
-go: creating new go.mod: module github.com/golang-oop/boolean
+go: creating new go.mod: module github.com/golang-cop/boolean
 go: to add module requirements and sums:
         go mod tidy
 ```
@@ -23,7 +23,7 @@ package main
 
 import (
         "fmt"
-        "github.com/golang-oop/string"
+        "github.com/golang-cop/string"
 )
 
 func main {

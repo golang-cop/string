@@ -3,7 +3,7 @@ package String
 import (
 	"testing"
 
-	Array "github.com/golang-oop/array/src"
+	Array "github.com/golang-cop/array/src"
 )
 
 func TestNewDefaultIsEmpty(t *testing.T) {
