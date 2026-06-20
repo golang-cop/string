@@ -84,3 +84,17 @@ func (d data) Trim() Result.Interface {
 func (d data) Equal(other String.Interface) bool {
 	return false
 }
+
+func (d data) StartsWith(prefix string) bool {
+	return false
+}
+
+func (d data) EndsWith(suffix string) bool {
+	return false
+}
+
+func (d data) Format(args ...interface{}) Result.Interface {
+	return Result.New(
+		Result.WithPayload(d),
+	)
+}

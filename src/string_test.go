@@ -158,6 +158,41 @@ func TestEqual(t *testing.T) {
 	}
 }
 
+func TestStartsWith(t *testing.T) {
+	s := New(WithGoString(`Hello World`))
+	if !s.StartsWith(`Hello`) {
+		t.Fatal("StartsWith(Hello) = false, want true")
+	}
+	if s.StartsWith(`World`) {
+		t.Fatal("StartsWith(World) = true, want false")
+	}
+}
+
+func TestEndsWith(t *testing.T) {
+	s := New(WithGoString(`Hello World`))
+	if !s.EndsWith(`World`) {
+		t.Fatal("EndsWith(World) = false, want true")
+	}
+	if s.EndsWith(`Hello`) {
+		t.Fatal("EndsWith(Hello) = true, want false")
+	}
+}
+
+func TestFormat(t *testing.T) {
+	s := New(WithGoString(`Hello %s, you are %d`))
+	r := s.Format(`World`, 42)
+	if r.HasError() {
+		t.Fatal("Format HasError = true, want false")
+	}
+	payload, ok := r.Payload().(Interface)
+	if !ok {
+		t.Fatalf("Format payload is not String.Interface: %T", r.Payload())
+	}
+	if got := payload.ToGoString(); got != `Hello World, you are 42` {
+		t.Fatalf("Format = %q, want %q", got, `Hello World, you are 42`)
+	}
+}
+
 func TestNull(t *testing.T) {
 	n := Null()
 	if !n.IsNull() {
@@ -174,6 +209,21 @@ func TestNull(t *testing.T) {
 	}
 	if n.Equal(New(WithGoString(``))) {
 		t.Fatal("Null Equal = true, want false")
+	}
+	if n.StartsWith(`x`) {
+		t.Fatal("Null StartsWith = true, want false")
+	}
+	if n.EndsWith(`x`) {
+		t.Fatal("Null EndsWith = true, want false")
+	}
+
+	// Format returns a successful Result wrapping the null String.
+	formatR := n.Format(`x`)
+	if formatR.HasError() {
+		t.Fatal("Null Format HasError = true, want false")
+	}
+	if p, ok := formatR.Payload().(Interface); !ok || !p.IsNull() {
+		t.Fatalf("Null Format payload is not the null String: %T", formatR.Payload())
 	}
 
 	// Set returns a successful Result wrapping the null String.

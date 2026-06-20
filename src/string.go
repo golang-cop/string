@@ -1,6 +1,7 @@
 package String
 
 import (
+	"fmt"
 	"strings"
 	"unicode/utf8"
 
@@ -20,6 +21,9 @@ type Interface interface {
 	Lower() Result.Interface
 	Trim() Result.Interface
 	Equal(Interface) bool
+	StartsWith(prefix string) bool
+	EndsWith(suffix string) bool
+	Format(args ...interface{}) Result.Interface
 	IsNull() bool
 }
 
@@ -176,6 +180,30 @@ func (d data) Equal(other Interface) bool {
 	return d.value == other.ToGoString()
 }
 
+/*
+StartsWith reports, as a Go bool, whether the String begins with prefix.
+*/
+func (d data) StartsWith(prefix string) bool {
+	return strings.HasPrefix(d.value, prefix)
+}
+
+/*
+EndsWith reports, as a Go bool, whether the String ends with suffix.
+*/
+func (d data) EndsWith(suffix string) bool {
+	return strings.HasSuffix(d.value, suffix)
+}
+
+/*
+Format returns, in the Result payload, a new String equal to fmt.Sprintf applied
+to the receiver's value (used as the format string) and args.
+*/
+func (d data) Format(args ...interface{}) Result.Interface {
+	return Result.New(
+		Result.WithPayload(New(WithGoString(fmt.Sprintf(d.value, args...)))),
+	)
+}
+
 func (d data) IsNull() bool {
 	return false
 }
@@ -240,6 +268,16 @@ func (n *null) Trim() Result.Interface {
 }
 
 func (n *null) Equal(other Interface) bool { return false }
+
+func (n *null) StartsWith(prefix string) bool { return false }
+
+func (n *null) EndsWith(suffix string) bool { return false }
+
+func (n *null) Format(args ...interface{}) Result.Interface {
+	return Result.New(
+		Result.WithPayload(n),
+	)
+}
 
 // IsNull reports that this is the null String.
 func (n *null) IsNull() bool { return true }

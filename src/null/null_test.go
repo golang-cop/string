@@ -55,6 +55,29 @@ func TestEqualFalse(t *testing.T) {
 	}
 }
 
+func TestStartsWithFalse(t *testing.T) {
+	if New().StartsWith(`x`) {
+		t.Fatal("NullString.StartsWith() = true, want false")
+	}
+}
+
+func TestEndsWithFalse(t *testing.T) {
+	if New().EndsWith(`x`) {
+		t.Fatal("NullString.EndsWith() = true, want false")
+	}
+}
+
+func TestFormatReturnsNull(t *testing.T) {
+	r := New().Format(`x`)
+	if r.HasError() {
+		t.Fatal("NullString.Format HasError = true, want false")
+	}
+	payload, ok := r.Payload().(String.Interface)
+	if !ok || !payload.IsNull() {
+		t.Fatalf("NullString.Format payload is not the null String: %T", r.Payload())
+	}
+}
+
 func TestNewValueOpsReturnNull(t *testing.T) {
 	n := New()
 	results := map[string]struct {
