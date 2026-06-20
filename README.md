@@ -2,6 +2,8 @@
 
 # string
 
+[![ci](https://github.com/go-composites/string/actions/workflows/ci.yml/badge.svg)](https://github.com/go-composites/string/actions/workflows/ci.yml)
+
 The text composite of [go-composites](https://github.com/go-composites). A
 `String` wraps a Go `string` and exposes its operations either as plain Go
 predicates (`bool`/`int`) or, when they produce a new value, as a
