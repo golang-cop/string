@@ -1,10 +1,10 @@
 package NullString
 
 import (
-	MethodNotImplementedError "github.com/golang-cop/error/src/method_not_implemented"
-	Null "github.com/golang-cop/null/src"
-	Result "github.com/golang-cop/result/src"
-	String "github.com/golang-cop/string/src"
+	MethodNotImplementedError "github.com/go-composites/error/src/method_not_implemented"
+	Null "github.com/go-composites/null/src"
+	Result "github.com/go-composites/result/src"
+	String "github.com/go-composites/string/src"
 )
 
 type Interface interface {

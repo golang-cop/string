@@ -6,7 +6,7 @@ tasks:
     cmds:
     - |
     
-      go mod init github.com/golang-cop/string
+      go mod init github.com/go-composites/string
 
   requirements:
     desc: Add module requirements and sums

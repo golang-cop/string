@@ -3,8 +3,8 @@ package String
 import (
 	"strings"
 
-	Array "github.com/golang-cop/array/src"
-	Result "github.com/golang-cop/result/src"
+	Array "github.com/go-composites/array/src"
+	Result "github.com/go-composites/result/src"
 )
 
 type Interface interface {
