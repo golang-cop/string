@@ -2,6 +2,8 @@ package NullString
 
 import (
 	"testing"
+
+	String "github.com/go-composites/string/src"
 )
 
 func TestNewIsNull(t *testing.T) {
@@ -32,5 +34,52 @@ func TestSetNotImplemented(t *testing.T) {
 	r := New().Set(`x`)
 	if got := r.Error().Message(); got == `` {
 		t.Fatal("Set on NullString should attach a non-empty error message")
+	}
+}
+
+func TestLengthZero(t *testing.T) {
+	if got := New().Length(); got != 0 {
+		t.Fatalf("NullString.Length() = %d, want 0", got)
+	}
+}
+
+func TestContainsFalse(t *testing.T) {
+	if New().Contains(`x`) {
+		t.Fatal("NullString.Contains() = true, want false")
+	}
+}
+
+func TestEqualFalse(t *testing.T) {
+	if New().Equal(String.New()) {
+		t.Fatal("NullString.Equal() = true, want false")
+	}
+}
+
+func TestNewValueOpsReturnNull(t *testing.T) {
+	n := New()
+	results := map[string]struct {
+		r String.Interface
+	}{}
+	for name, r := range map[string]interface {
+		HasError() bool
+		Payload() interface{}
+	}{
+		`Concat`:  n.Concat(String.New(String.WithGoString(`x`))),
+		`Replace`: n.Replace(`a`, `b`),
+		`Upper`:   n.Upper(),
+		`Lower`:   n.Lower(),
+		`Trim`:    n.Trim(),
+	} {
+		if r.HasError() {
+			t.Fatalf("NullString.%s HasError = true, want false", name)
+		}
+		payload, ok := r.Payload().(String.Interface)
+		if !ok || !payload.IsNull() {
+			t.Fatalf("NullString.%s payload is not the null String: %T", name, r.Payload())
+		}
+		results[name] = struct{ r String.Interface }{payload}
+	}
+	if len(results) != 5 {
+		t.Fatalf("covered %d new-value ops, want 5", len(results))
 	}
 }

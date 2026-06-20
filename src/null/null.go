@@ -42,3 +42,45 @@ func (d data) Set(value string) Result.Interface {
 		),
 	)
 }
+
+func (d data) Length() int {
+	return 0
+}
+
+func (d data) Concat(other String.Interface) Result.Interface {
+	return Result.New(
+		Result.WithPayload(d),
+	)
+}
+
+func (d data) Contains(substr string) bool {
+	return false
+}
+
+func (d data) Replace(old, new string) Result.Interface {
+	return Result.New(
+		Result.WithPayload(d),
+	)
+}
+
+func (d data) Upper() Result.Interface {
+	return Result.New(
+		Result.WithPayload(d),
+	)
+}
+
+func (d data) Lower() Result.Interface {
+	return Result.New(
+		Result.WithPayload(d),
+	)
+}
+
+func (d data) Trim() Result.Interface {
+	return Result.New(
+		Result.WithPayload(d),
+	)
+}
+
+func (d data) Equal(other String.Interface) bool {
+	return false
+}

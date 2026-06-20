@@ -2,6 +2,7 @@ package String
 
 import (
 	"strings"
+	"unicode/utf8"
 
 	Array "github.com/go-composites/array/src"
 	Result "github.com/go-composites/result/src"
@@ -11,6 +12,14 @@ type Interface interface {
 	Set(string) Result.Interface
 	ToGoString() string
 	Split(string) Result.Interface
+	Length() int
+	Concat(Interface) Result.Interface
+	Contains(substr string) bool
+	Replace(old, new string) Result.Interface
+	Upper() Result.Interface
+	Lower() Result.Interface
+	Trim() Result.Interface
+	Equal(Interface) bool
 	IsNull() bool
 }
 
@@ -94,6 +103,143 @@ func (d data) Split(separator string) Result.Interface {
 	)
 }
 
+/*
+Length returns the number of runes in the String (not the byte length), so
+multibyte UTF-8 content is counted correctly.
+*/
+func (d data) Length() int {
+	return utf8.RuneCountInString(d.value)
+}
+
+/*
+Concat returns, in the Result payload, a new String equal to the receiver
+followed by the argument.
+*/
+func (d data) Concat(other Interface) Result.Interface {
+	return Result.New(
+		Result.WithPayload(New(WithGoString(d.value + other.ToGoString()))),
+	)
+}
+
+/*
+Contains reports, as a Go bool, whether substr is within the String.
+*/
+func (d data) Contains(substr string) bool {
+	return strings.Contains(d.value, substr)
+}
+
+/*
+Replace returns, in the Result payload, a new String with all non-overlapping
+instances of old replaced by new.
+*/
+func (d data) Replace(old, new string) Result.Interface {
+	return Result.New(
+		Result.WithPayload(New(WithGoString(strings.ReplaceAll(d.value, old, new)))),
+	)
+}
+
+/*
+Upper returns, in the Result payload, a new String with all characters mapped to
+their upper case.
+*/
+func (d data) Upper() Result.Interface {
+	return Result.New(
+		Result.WithPayload(New(WithGoString(strings.ToUpper(d.value)))),
+	)
+}
+
+/*
+Lower returns, in the Result payload, a new String with all characters mapped to
+their lower case.
+*/
+func (d data) Lower() Result.Interface {
+	return Result.New(
+		Result.WithPayload(New(WithGoString(strings.ToLower(d.value)))),
+	)
+}
+
+/*
+Trim returns, in the Result payload, a new String with leading and trailing
+white space removed.
+*/
+func (d data) Trim() Result.Interface {
+	return Result.New(
+		Result.WithPayload(New(WithGoString(strings.TrimSpace(d.value)))),
+	)
+}
+
+/*
+Equal reports, as a Go bool, whether the receiver and the argument carry the same
+underlying string.
+*/
+func (d data) Equal(other Interface) bool {
+	return d.value == other.ToGoString()
+}
+
 func (d data) IsNull() bool {
 	return false
 }
+
+// null is the Null-Object variant of a String: an empty, immutable placeholder
+// that honours the full Interface without ever being nil. New-value operations
+// return a successful Result wrapping the null String (or, where chaining is
+// meaningful, the receiver); predicates always report false; ToGoString is "".
+type null struct{}
+
+// Null returns the Null-Object String.
+func Null() Interface {
+	return &null{}
+}
+
+func (n *null) Set(value string) Result.Interface {
+	return Result.New(
+		Result.WithPayload(n),
+	)
+}
+
+func (n *null) ToGoString() string { return `` }
+
+func (n *null) Split(separator string) Result.Interface {
+	return Result.New(
+		Result.WithPayload(Array.New()),
+	)
+}
+
+func (n *null) Length() int { return 0 }
+
+func (n *null) Concat(other Interface) Result.Interface {
+	return Result.New(
+		Result.WithPayload(n),
+	)
+}
+
+func (n *null) Contains(substr string) bool { return false }
+
+func (n *null) Replace(old, new string) Result.Interface {
+	return Result.New(
+		Result.WithPayload(n),
+	)
+}
+
+func (n *null) Upper() Result.Interface {
+	return Result.New(
+		Result.WithPayload(n),
+	)
+}
+
+func (n *null) Lower() Result.Interface {
+	return Result.New(
+		Result.WithPayload(n),
+	)
+}
+
+func (n *null) Trim() Result.Interface {
+	return Result.New(
+		Result.WithPayload(n),
+	)
+}
+
+func (n *null) Equal(other Interface) bool { return false }
+
+// IsNull reports that this is the null String.
+func (n *null) IsNull() bool { return true }
