@@ -1,10 +1,10 @@
 module github.com/go-composites/string
 
-go 1.21.6
+go 1.26.4
 
 require (
-	github.com/go-composites/array v0.0.0-20260620115504-b04e686db10b
-	github.com/go-composites/error v0.0.0-20260620115051-f65a69bcd912
-	github.com/go-composites/null v0.0.0-20260620115053-4c4729da2abd
-	github.com/go-composites/result v0.0.0-20260620115446-ce5eeb95ac2c
+	github.com/go-composites/array v0.0.0-20260621062820-1aa11b71d5d6
+	github.com/go-composites/error v0.0.0-20260621061850-8f949885a586
+	github.com/go-composites/null v0.0.0-20260621061849-c8074799d5aa
+	github.com/go-composites/result v0.0.0-20260621061851-32adc2fb3ac2
 )
